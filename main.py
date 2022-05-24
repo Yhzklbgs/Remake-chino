@@ -106,7 +106,7 @@ def downloadInstagramUrl(to,text):
 
 def downloadYoutubeUrl(to,text):
     try:
-        r = requests.get(f'http://8.209.197.129/ytdl?url={text}&apikey==ARI APIKEY NYA SENDIRI')
+        r = requests.get(f'http://8.209.197.129/ytdl?url={text}&apikey= cARI APIKEY NYA SENDIRI')
         data = r.json()
         if 'shorts' in text:
             video = data['data']['ytInfo']['url']
@@ -159,6 +159,18 @@ def doConvert(msg,to,sender,text):
         auth = sep.split(" ")[1]
         if sep.split(" ")[0].lower() == "mac" or sep.split(" ")[0].lower() == "1":
             login = Thread(target=cvprim, args=(msg,to,sender,auth,"mac"))
+            login.daemon = True
+            login.start()
+        if sep.split(" ")[0].lower() == "win" or sep.split(" ")[0].lower() == "2":
+            login = Thread(target=cvprim, args=(msg,to,sender,auth,"win"))
+            login.daemon = True
+            login.start()
+        if sep.split(" ")[0].lower() == "ipad" or sep.split(" ")[0].lower() == "3":
+            login = Thread(target=cvprim, args=(msg,to,sender,auth,"ipad"))
+            login.daemon = True
+            login.start()
+        if sep.split(" ")[0].lower() == "chrome" or sep.split(" ")[0].lower() == "4":
+            login = Thread(target=cvprim, args=(msg,to,sender,auth,"ipad"))
             login.daemon = True
             login.start()
 
