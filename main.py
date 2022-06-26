@@ -83,17 +83,17 @@ def getUrlInText(text):
 
 def downloadTiktokUrl(to,text):
     try:
-        r = requests.get(f'https://api.coursehero.store/musicallydown?url={text}')
+        r = requests.get(f'https://apitrojans.xyz/tiktok?url={text}&apikey=CARI APIKEY NYA SENDIRI')
         data = r.json()
-        video = data['result']['download']
-        thumb = 'https://seeklogo.com/images/T/tiktok-logo-B9AC5FE794-seeklogo.com.png'
-        client.sendTemplateVideoV2(to,video,thumb)
+        video = data['result']['video_url']
+        thumbs = data['result']['thumbnail']
+        client.sendTemplateVideoV2(to,video,thumbs)
     except Exception as e:
         traceback.print_tb(e.__traceback__)
 
 def downloadInstagramUrl(to,text):
     try:
-        r = requests.get(f'http://8.209.197.129/instagram/post?url={text}&apikey=CARI APIKEY NYA SENDIRI')
+        r = requests.get(f'https://apitrojans.xyz/instagram/post?url={text}&apikey=CARI APIKEY NYA SENDIRI')
         data = r.json()
         urls = []
         for media in data['result']['media']:
@@ -106,7 +106,7 @@ def downloadInstagramUrl(to,text):
 
 def downloadYoutubeUrl(to,text):
     try:
-        r = requests.get(f'http://8.209.197.129/ytdl?url={text}&apikey= cARI APIKEY NYA SENDIRI')
+        r = requests.get(f'https://apitrojans.xyz/ytdl?url={text}&apikey= cARI APIKEY NYA SENDIRI')
         data = r.json()
         if 'shorts' in text:
             video = data['data']['ytInfo']['url']
