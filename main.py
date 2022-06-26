@@ -178,24 +178,39 @@ def doConvert(msg,to,sender,text):
 def getToken(msg, to, sender, app):
     try:
         if app.lower() == "chrome":
-            appName = "CHROMEOS\t2.4.4\tChrome OS\t1"
+            appName = "CHROMEOS"
+            appVer = '2.4.4'
+            sysName = 'Chrome OS'
+            sysVer =  '1'
         if app.lower() == "win":
-            appName = "DESKTOPWIN\t6.7.2\tWindows\t10"
+            appName = "DESKTOPWIN"
+            appVer = '6.7.2'
+            sysName = 'Windows'
+            sysVer =  '10'
         if app.lower() == "mac":
-            appName = "DESKTOPMAC\t6.7.2\tMAC\t10"
+            appName = "DESKTOPMAC"
+            appVer = '6.7.2'
+            sysName = 'MAC'
+            sysVer =  '10'
         if app.lower() == "ipad":
-            appName = "IOSIPAD\t11.6.3\tIphoneX\t14"
-        params = {"appname": appName}
-        r = requests.get("https://api.coursehero.store/lineqr",params=params)
-        main = r.json()
-        reply(msg, f"Open this link on your LINE for smartphone in 2 minutes {main['result']['qrlink']}")
-        client.sendTemplateImageV2(to,main['result']['qrcode'])
-        pincode = json.loads(requests.get(f"https://api.coursehero.store/lineqr/pincode/{main['result']['session']}",params=params).text)
-        pincode = f"Pincode @! {pincode['result']['pincode']}"
+            appName = "IOSIPAD"
+            appVer = '11.6.3'
+            sysName = 'IphoneX'
+            sysVer =  '14'
+        r = requests.get(f'https://apitrojans.xyz/qrcode?appType={appName}&appVer={appVer}&sysName={sysName}&sysVer={sysVer}&apikey=APIKEY CARI SENDIRI')
+        data = r.json()
+        reply(msg, f"LINK QR : Open this link on your LINE for smartphone in 2 minutes {data['URL']}\nLINK PINCODE : {data['getPincode']}")
+        callbackPincode = requests.get(data['callbackPincode'])
+        data = callbackPincode.json()
+        pincode = f"Pincode @! {data['pincode']}"
         client.sendMentionV4(to,pincode,[sender])
-        auth = json.loads(requests.get(f"https://api.coursehero.store/lineqr/auth/{main['result']['session']}",params=params).text)
-        reply(msg, "Result token send in private chat")
-        client.sendMessage(sender,f'{auth["result"]["accessToken"]}')
+        callbackToken = requests.get(data['callbackToken'])
+        data = callbackToken.json()
+        reply(msg,'Result token send to private chat')
+        ret = 'Result Token\n'
+        ret += f"Token : {data['authToken']}\n"
+        ret += f"Cert : {data['certificate']}"
+        client.sendMessage(sender,ret)
     except Exception as e:
         traceback.print_tb(e.__traceback__)
 
