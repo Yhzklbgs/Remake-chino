@@ -106,7 +106,7 @@ def downloadInstagramUrl(to,text):
 
 def downloadYoutubeUrl(to,text):
     try:
-        r = requests.get(f'https://apitrojans.xyz/ytdl?url={text}&apikey= cARI APIKEY NYA SENDIRI')
+        r = requests.get(f'https://apitrojans.xyz/ytdl?url={text}&apikey=CARI APIKEY NYA SENDIRI')
         data = r.json()
         if 'shorts' in text:
             video = data['data']['ytInfo']['url']
@@ -119,6 +119,18 @@ def downloadYoutubeUrl(to,text):
     except Exception as e:
         traceback.print_tb(e.__traceback__)
 
+def downloadTwitterUrl(to,text):
+    try:
+        r = requests.get(f'https://apitrojans.xyz/twitter/downloader?url={text}&apikey=CARI APIKEY SENDIRI')
+        data = r.json()
+        for media in data['result']['media_url']:
+            if media['type'] == "image":
+                time.sleep(1)
+                client.sendTemplateImageV2(to,media['url'],True,'Twitter Post','https://assets.stickpng.com/images/580b57fcd9996e24bc43c53e.png',media['url'])
+            else:
+                client.sendTemplateVideoV2(to,media['url'])
+    except Exception as e:
+        logError(e)
 # CONVERT PRIMARY FUNCTION #
 def cvprim(msg, to, sender, auth, app):
     try:
@@ -339,6 +351,12 @@ def main(op):
                         links = getUrlInText(text)
                         for link in links:
                             login = Thread(target=downloadYoutubeUrl, args=(to,link))
+                            login.daemon = True
+                            login.start()
+                    if "twitter.com" in text.lower():
+                        links = getUrlInText(text)
+                        for link in links:
+                            login = Thread(target=downloadTwitterUrl, args=(to,link))
                             login.daemon = True
                             login.start()
                     txt = msg.text.lower()
