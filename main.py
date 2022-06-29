@@ -85,9 +85,12 @@ def downloadTiktokUrl(to,text):
     try:
         r = requests.get(f'https://apitrojans.xyz/tiktok?url={text}&apikey=CARI APIKEY NYA SENDIRI')
         data = r.json()
-        video = data['result']['video_url']
-        thumbs = data['result']['thumbnail']
-        client.sendTemplateVideoV2(to,video,thumbs)
+        for a in data['result']['media']:
+            if a['is_video'] == False:
+                time.sleep(1)
+                client.sendTemplateImageV2(to,a['image'])
+            else:
+                client.sendTemplateVideoV2(to,a['video'],'https://i.ibb.co/3dsmGY3/tik-tok-logo-33078.png')
     except Exception as e:
         traceback.print_tb(e.__traceback__)
 
