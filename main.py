@@ -133,7 +133,26 @@ def downloadTwitterUrl(to,text):
             else:
                 client.sendTemplateVideoV2(to,media['url'])
     except Exception as e:
-        logError(e)
+        traceback.print_tb(e.__traceback__)
+        
+ def downloadTimelineUrl(to,text):
+    try:
+        r = request.get(f'https://apitrojans.xyz/line/timeline?url={text}&apikey=APIKEY CARI SENDIRI')
+        data = r.json()
+        ret = ' 「 Check Post 」'
+        ret += f'Like :  data["postInfo"]["likeCount"]'
+        ret += 'Share :  data["postInfo"]["shareCount"]'
+        ret += 'Comment : data["postInfo"]["commentCount"]'
+        ret += 'Description :  data["postInfo"]["desciption"]'
+        reply(msg,ret)
+        for a in data['media']:
+            if a['type'] == 'VIDEO':
+                client.sendTemplateVideoV2(to,a['url'])
+            else:
+                client.sendTemplateImageV2(to,a['url'])
+    except Exception as e:
+        traceback.print_tb(e.__traceback__)
+
 # CONVERT PRIMARY FUNCTION #
 def cvprim(msg, to, sender, auth, app):
     try:
@@ -360,6 +379,12 @@ def main(op):
                         links = getUrlInText(text)
                         for link in links:
                             login = Thread(target=downloadTwitterUrl, args=(to,link))
+                            login.daemon = True
+                            login.start()
+                    if "linevoom.line.me" in text.lower():
+                        links = getUrlInText(text)
+                        for link in links:
+                            login = Thread(target=downloadTimelineUrl, args=(to,link))
                             login.daemon = True
                             login.start()
                     txt = msg.text.lower()
