@@ -282,15 +282,15 @@ def doToken(msg,to,sender,text):
 # APPNAME FUNCTION #
 def appNameLine(msg):
     try:
-        r = requests.get('https://minz-restapi.xyz/lineappname')
+        r = requests.get('https://apitrojans.xyz/line/latest?apikey=APIKEY CARI SENDIRI')
         data = r.json()
         ret = "APPNAME LINE\n"
-        ret += f"\nAndroid : {data['result']['ANDROID']}"
-        ret += f"\nChromeos : {data['result']['CHROMEOS']}"
-        ret += f"\nDesktopmac : {data['result']['DESKTOPMAC']}"
-        ret += f"\nDesktopwin : {data['result']['DESKTOPWIN']}"
-        ret += f"\nIos : {data['result']['IOS']}"
-        ret += f"\nIosipad : {data['result']['IOSIPAD']}"
+        ret += f"\nAndroid : {data['app_version']['ANDROID']}"
+        ret += f"\nChromeos : {data['app_version']['CHROMEOS']}"
+        ret += f"\nDesktopmac : {data['app_version']['DESKTOPMAC']}"
+        ret += f"\nDesktopwin : {data['app_version']['DESKTOPWIN']}"
+        ret += f"\nIos : {data['app_version']['IOS']}"
+        ret += f"\nIosipad : {data['app_version']['IOSIPAD']}"
         reply(msg,ret)
     except Exception as e:
         logError(e)
